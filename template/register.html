@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html class="light" lang="uz">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Ro‘yxatdan O‘tish - Todo List</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark min-h-screen flex items-center justify-center p-4 font-display">
+    <div
+        class="w-full max-w-[1000px] flex bg-white dark:bg-slate-900 rounded-xl shadow-xl overflow-hidden min-h-[600px]">
+        <!-- Left Side: Visual/Branding -->
+        <div class="hidden lg:flex lg:w-1/2 bg-primary p-12 flex-col justify-between relative overflow-hidden">
+            <div class="relative z-10">
+                <div class="flex items-center gap-2 mb-8">
+                    <div class="bg-white/20 p-2 rounded-lg backdrop-blur-sm">
+                        <span class="material-icons text-white">task_alt</span>
+                    </div>
+                    <span class="text-white font-bold text-xl tracking-tight">DoIt.</span>
+                </div>
+                <h1 class="text-white text-4xl font-bold leading-tight mb-4">Vazifalaringizni tartibga soling.</h1>
+                <p class="text-primary/10 text-lg font-medium text-white/80">
+                    Django asosida yaratilgan zamonaviy Todo List ilovasi yordamida unumdorlikni oshiring.
+                </p>
+            </div>
+            <div class="relative z-10">
+                <div class="flex items-center gap-4 text-white/90">
+                    <div class="flex -space-x-3">
+                        <img class="w-10 h-10 rounded-full border-2 border-primary object-cover"
+                            data-alt="Foydalanuvchi profil rasmi 1"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU61l-yQu0-QQGhvsGagvloawI0rsikG1mzCoVsMNVT5Ivv0T8n3I9kYjJ0z_325k4LPEsRN6qDIywDQqBbMx3fs6mH9zxo-HtflzB3375DVqMhotmuDr-2oOLXRxEaMHwKFFsZJrw_JUAZcqS6LSgfD9ae0Q_1NaBu3yYLNWdISA5txRg2sK_tsZJoyItRdev2IQ3lMWsOwxhc67JxjzEZKEnpV7sNDBoPazHmzL7QeD9nZ4a53R4ut5_5RyyyOB5eo5shCYn-hMz" />
+                        <img class="w-10 h-10 rounded-full border-2 border-primary object-cover"
+                            data-alt="Foydalanuvchi profil rasmi 2"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBU0I5_73z98cR-__YfyvaZ3Iq_2VmDsu-Wyqdu8FYJZ4ymydf6ztL6X3audlo_TCYzZk55RbG8IS1t5mVX7X_wTi9g6Ia1IeoG8lQECC__UmqXZCccYbyBjzYhU6aufFRRzW_-6H3Dl5A7nV3vDpAC6ZnEb2qfRgOV72t_zOpu3WgyYg3vAfD836Lb1GomWFC7Df_tY3XLJa1MTaoJkrXYZ5loHdSTRiJifqqXBO5GKJMbrWpjRbCH-CqxzgvF5Wb0IbvKhHUp6Ca5" />
+                        <img class="w-10 h-10 rounded-full border-2 border-primary object-cover"
+                            data-alt="Foydalanuvchi profil rasmi 3"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuc1qPOHTND_e6aWX1PQ-u65Oo72bY5w9el_kK5OqkZwxEp9g-yHXpL_JFUqbRX9qrSgJ6Nh9F5BW682A2k2oDkbPFqwvCXr3bvB0m2wm4K67s6w4OGwJZgmeBzNdmc2ZyRC6Q3OCxE3NeCGYEXlUkbJRYnCROmQ0Fmic5toOEqtd2EzU8sgOyhbVshiIO3PuM7UQhgGdZSnUSCXKr-9gmzl1FqTIQ7R40TdxB7A8WUsK5nxHoAtrfmrpE5DdROwUSfVl_N5-IZhvk" />
+                    </div>
+                    <span class="text-sm font-medium">1,000+ foydalanuvchiga qo'shiling</span>
+                </div>
+            </div>
+            <!-- Abstract Background Decoration -->
+            <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
+            <div class="absolute -top-20 -left-20 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
+        </div>
+        <!-- Right Side: Registration Form -->
+        <div class="w-full lg:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+            <div class="max-w-md mx-auto w-full">
+                <div class="mb-10">
+                    <h2 class="text-3xl font-bold text-slate-800 dark:text-white mb-2">Ro‘yxatdan O‘tish</h2>
+                    <p class="text-slate-500 dark:text-slate-400">Yangi hisob yaratish uchun quyidagi ma'lumotlarni
+                        to'ldiring.</p>
+                </div>
+                <p style="color: red;">{{error}}</p>
+                <form class="space-y-5" method="post">
+                    {% csrf_token %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label class="text-sm font-semibold text-slate-700 dark:text-slate-300"
+                                for="first_name">Ism</label>
+                            <input
+                                class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                                id="first_name" name="first_name" placeholder="Masalan: Aziz" type="text" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-semibold text-slate-700 dark:text-slate-300"
+                                for="last_name">Familya</label>
+                            <input
+                                class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                                id="last_name" name="last_name" placeholder="Masalan: Karimov" type="text" />
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300"
+                            for="username">Foydalanuvchi nomi</label>
+                        <div class="relative">
+                            <span
+                                class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">person_outline</span>
+                            <input
+                                class="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                                id="username" name="username" placeholder="aziz123" type="text" />
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300"
+                            for="password">Parol</label>
+                        <div class="relative">
+                            <span
+                                class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">lock_outline</span>
+                            <input
+                                class="w-full pl-10 pr-12 py-3 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                                id="password" name="password" placeholder="••••••••" type="password" />
+                            <button
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                                type="button">
+                                <span class="material-icons text-lg">visibility_off</span>
+                            </button>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-1 italic">Kamida 8 ta belgidan iborat bo'lishi kerak.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 pt-2">
+                        <input class="rounded text-primary focus:ring-primary h-4 w-4 border-slate-300" id="terms"
+                            type="checkbox" />
+                        <label class="text-xs text-slate-600 dark:text-slate-400" for="terms">
+                            Men <a class="text-primary hover:underline font-medium" href="#">foydalanish shartlariga</a>
+                            roziman.
+                        </label>
+                    </div>
+                    <button
+                        class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 rounded-lg shadow-lg shadow-primary/20 transform transition-transform active:scale-[0.98] mt-4 flex items-center justify-center gap-2"
+                        type="submit">
+                        <span>Ro‘yxatdan o‘tish</span>
+                        <span class="material-icons text-sm">arrow_forward</span>
+                    </button>
+                </form>
+                <div class="mt-8 pt-8 border-t border-slate-100 dark:border-slate-800 text-center">
+                    <p class="text-slate-600 dark:text-slate-400">
+                        Hisobingiz bormi?
+                        <a class="text-primary font-bold hover:underline ml-1" href="{% url 'login' %}">Tizimga kirish</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

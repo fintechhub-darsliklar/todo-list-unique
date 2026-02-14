@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html class="light" lang="uz">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Asosiy Dashboard | Django Todo</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+
+        function hidden_add_task(){
+
+        }
+
+        function openModal() {
+            document.getElementById("taskModal").classList.remove("hidden");
+        }
+
+        // Modalni yopish
+        function closeModal() {
+            document.getElementById("taskModal").classList.add("hidden");
+        }
+
+        // Toggle (ochiq bo'lsa yopadi, yopiq bo'lsa ochadi)
+        function toggleModal() {
+            document.getElementById("taskModal").classList.toggle("hidden");
+        }
+        
+    </script>
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+    <!-- Top Navigation Bar -->
+    <nav class="sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <!-- Brand -->
+            <div class="flex items-center gap-2 min-w-max">
+                <div class="bg-primary p-1.5 rounded-lg">
+                    <span class="material-icons text-white text-xl">check_circle</span>
+                </div>
+                <h1 class="text-xl font-bold tracking-tight hidden md:block">Asosiy <span
+                        class="text-primary">Dashboard</span></h1>
+            </div>
+            <!-- Search Bar -->
+            <div class="flex-1 max-w-2xl">
+                <div class="relative group">
+                    <span
+                        class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+                    <input
+                        class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-transparent focus:border-primary focus:ring-0 rounded-xl transition-all outline-none text-sm"
+                        placeholder="Vazifalarni qidirish..." type="text" />
+                </div>
+            </div>
+            <!-- User Profile -->
+            <div class="flex items-center gap-3">
+                <button class="relative p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+                    <span class="material-icons">notifications</span>
+                    <span
+                        class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+                </button>
+                <div class="h-8 w-[1px] bg-slate-200 dark:border-slate-700 hidden sm:block"></div>
+                <div class="flex items-center gap-2 cursor-pointer group">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-xs font-semibold leading-none">{{user.first_name}} {{user.last_name}}</p>
+                        <p class="text-[10px] text-slate-500">Administrator</p>
+                    </div>
+                    <a href="{% url 'logout' %}">
+                    <img alt="User Profile" class="w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700"
+                        data-alt="A professional male user profile portrait"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC26f_dpTqwi3Yjau78ORgBV6j6yUOl3VMDkClUAv6BNx1rKLZSJCYPT1x-ymN8_XLCwTs0tnbLuGt1gA-CPGP2Y-06IFL3e3GsRadTB6v98XwRM1AGy3n8zt7MtsDXr_cXH4E6DPzqy45xpyD0KFaWmlMBBJ49is5pWqfq647tP3rqx_h-TJ-sFLTTqrt6Efyhr3FBABUjAGz8n9wLn_z9k7hLE-JhyVyc1YFlVsyGty_Y0eRKEv1LgWQEWb5u1F30t_-rVO4qx1Kg" />
+                    </a>
+                    </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Toolbar Section -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+            <div class="flex flex-wrap items-center gap-2 p-1 bg-slate-200/50 dark:bg-slate-800/50 rounded-xl w-fit">
+                <button
+                    class="px-5 py-2 text-sm font-medium rounded-lg bg-white dark:bg-primary shadow-sm text-primary dark:text-white transition-all">Barchasi</button>
+                <button
+                    class="px-5 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-800 transition-all">Bajarish
+                    kerak</button>
+                <button
+                    class="px-5 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-800 transition-all">Tugallangan</button>
+                <button
+                    class="px-5 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-800 transition-all">Arxivda</button>
+            </div>
+            <button
+                onclick="openModal()"
+                class="flex items-center justify-center gap-2 bg-primary hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-semibold shadow-lg shadow-primary/20 transition-all transform hover:-translate-y-0.5 active:translate-y-0">
+                <span class="material-icons text-xl">add</span>
+                <span>Yangi vazifa</span>
+            </button>
+        </div>
+        <!-- Task Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Task Card 1: To Do -->
+            <div
+                class="group bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-none transition-all cursor-pointer border-l-4 border-l-amber-400">
+                <div class="flex justify-between items-start mb-3">
+                    <span
+                        class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">Bajarish
+                        kerak</span>
+                    <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                        <span class="material-icons">more_vert</span>
+                    </button>
+                </div>
+                <h3 class="font-bold text-lg mb-2 group-hover:text-primary transition-colors">Django API Integratsiyasi
+                </h3>
+                <p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-2 mb-4">Backend qismini frontend bilan
+                    bog'lash uchun REST framework darslarini ko'rib chiqish va routelarni sozlash.</p>
+                <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
+                    <div class="flex items-center gap-1.5 text-slate-400">
+                        <span class="material-icons text-base">calendar_today</span>
+                        <span class="text-xs font-medium">12-Oktabr, 14:00</span>
+                    </div>
+                    <div class="flex -space-x-2">
+                        <img alt="Team" class="w-6 h-6 rounded-full border-2 border-white dark:border-slate-900"
+                            data-alt="Team member profile photo"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLFRLsFetbff6vqQ0lL_EK6yMKHEWmgHyCXxRub8S-oV6Mi45ie5OnTaMvoMqZRYXQCG1_qhE7EcZ_e8DOxQKIBLsfsm6ACNaqOGrtnUyNdIA8wXXlQFdOQCmPoFxVrBa7FG85175eG2KpU5Xy2Nt8qmkgVXHvLBJLx2q1iUCMKalnAj8tN78BaZHRNKI1CeRpkBwRmqHfeHWocGmqCZw3peWv_1eJDIlJRDn4p7_5yiz4ZWRXLPj9fhJ5ZgfRYWhVfO56awkuWTPV" />
+                        <div
+                            class="w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-white dark:border-slate-900 flex items-center justify-center">
+                            <span class="text-[8px] font-bold">+2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Task Card 2: Completed -->
+            <div
+                class="group bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-none transition-all cursor-pointer border-l-4 border-l-emerald-500">
+                <div class="flex justify-between items-start mb-3">
+                    <span
+                        class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">Tugallangan</span>
+                    <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                        <span class="material-icons">more_vert</span>
+                    </button>
+                </div>
+                <h3 class="font-bold text-lg mb-2 line-through text-slate-400 dark:text-slate-500">Ma'lumotlar bazasi
+                    migratsiyasi</h3>
+                <p class="text-slate-400 dark:text-slate-500 text-sm line-clamp-2 mb-4">PostgreSQL bazasini sozlash va
+                    dastlabki schema migratsiyalarini amalga oshirish.</p>
+                <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
+                    <div class="flex items-center gap-1.5 text-emerald-500">
+                        <span class="material-icons text-base">check_circle</span>
+                        <span class="text-xs font-medium">Bajarildi: 10-Oktabr</span>
+                    </div>
+                    <div class="flex -space-x-2">
+                        <img alt="Team" class="w-6 h-6 rounded-full border-2 border-white dark:border-slate-900"
+                            data-alt="Female team member profile"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3R_eDcU2ZYQPIkjK8tf5CVn9LT7ZuekAKb8chTjEaXdUtVHkkzp9Ib7HiZS_GVWC1-51Kryd4-RT6vhCTFmoLJVS9nL99tbvACnXWqEF5U-2KE4-EhSyS_0Lgl_trb531ARxGMakPzv7p-XetnEdmMR4oh26Ebjd7x5MhwWn4GqtOsvnD8PtMrgStqy2l_YOIKN6QYi-ObeIvY_kk_wADTRn58zuhfd_QBdgYlBu5Ty9w7AvaUp_VTE77p-wtYKIVS4juVhKBgj_r" />
+                    </div>
+                </div>
+            </div>
+            <!-- Task Card 3: Priority -->
+            <div
+                class="group bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-none transition-all cursor-pointer border-l-4 border-l-primary">
+                <div class="flex justify-between items-start mb-3">
+                    <span
+                        class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-blue-100 text-primary dark:bg-primary/20 dark:text-primary">Bajarish
+                        kerak</span>
+                    <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                        <span class="material-icons">more_vert</span>
+                    </button>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="material-icons text-red-500 text-sm">priority_high</span>
+                    <h3 class="font-bold text-lg group-hover:text-primary transition-colors">UI Design Update</h3>
+                </div>
+                <p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-2 mb-4">Dashboard interfeysini Tailwind
+                    CSS yordamida yangi dizayn talablariga moslash.</p>
+                <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
+                    <div class="flex items-center gap-1.5 text-slate-400">
+                        <span class="material-icons text-base text-red-400">schedule</span>
+                        <span class="text-xs font-medium text-red-500">Bugun, 18:00 gacha</span>
+                    </div>
+                    <div class="flex -space-x-2">
+                        <div
+                            class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-[10px] text-white font-bold border-2 border-white dark:border-slate-900">
+                            AK</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Task Card 4 -->
+            <div
+                class="group bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-none transition-all cursor-pointer border-l-4 border-l-slate-400">
+                <div class="flex justify-between items-start mb-3">
+                    <span
+                        class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400">Arxivda</span>
+                    <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                        <span class="material-icons">more_vert</span>
+                    </button>
+                </div>
+                <h3 class="font-bold text-lg mb-2 opacity-60">Eski dokumentatsiya</h3>
+                <p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-2 mb-4">Loyiha boshlanishidagi qoralama
+                    hujjatlar va texnik topshiriqlar to'plami.</p>
+                <div
+                    class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800 opacity-60">
+                    <div class="flex items-center gap-1.5 text-slate-400">
+                        <span class="material-icons text-base">archive</span>
+                        <span class="text-xs font-medium">01-Sentabr, 2023</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Task Card 5 -->
+            <div
+                class="group bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-none transition-all cursor-pointer border-l-4 border-l-amber-400">
+                <div class="flex justify-between items-start mb-3">
+                    <span
+                        class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">Bajarish
+                        kerak</span>
+                    <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                        <span class="material-icons">more_vert</span>
+                    </button>
+                </div>
+                <h3 class="font-bold text-lg mb-2 group-hover:text-primary transition-colors">Testlash va QA</h3>
+                <p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-2 mb-4">Sistemadagi xatoliklarni
+                    aniqlash uchun unit-testlar yozish va umumiy debug jarayoni.</p>
+                <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
+                    <div class="flex items-center gap-1.5 text-slate-400">
+                        <span class="material-icons text-base">calendar_today</span>
+                        <span class="text-xs font-medium">15-Oktabr, 09:00</span>
+                    </div>
+                    <div class="flex -space-x-2">
+                        <img alt="Team" class="w-6 h-6 rounded-full border-2 border-white dark:border-slate-900"
+                            data-alt="Developer profile"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzwu-DDsDuAlJZtrTBLXrU5gwX3hjPM1aDCLI0zrWMFsH7KI77KvyMROV3d0Ew2pilClNJptVaLwLs-kT_SytgDuh0hljPCSLcXfDWifUVEs4f-_-qRCDDyO_VAjD6ljjR6etwNNTWP9VTegB-gxA3euFt5cwO_qrBvxyxlpsBoyHdj18YYiEDQuu7uBsKRy-bKMd7iZeyVJxqyvrI98uYoP7dzbjzkKAB-nIm_BztNrAOVJ2amDrvUp-RJ3cCwcRvvMfORsCX85T5" />
+                    </div>
+                </div>
+            </div>
+            <!-- Add New Task Empty Placeholder Card -->
+            <div
+                onclick="openModal()"
+                class="group border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl p-5 flex flex-col items-center justify-center text-slate-400 hover:border-primary hover:text-primary transition-all cursor-pointer min-h-[200px]">
+                <div
+                    class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-3 group-hover:bg-primary/10 transition-colors">
+                    <span class="material-icons text-2xl">add</span>
+                </div>
+                <p class="font-semibold">Yangi karta qo'shish</p>
+                <p class="text-xs">Tezkor vazifa yaratish uchun bosing</p>
+            </div>
+        </div>
+        <!-- Pagination/Footer -->
+        <div class="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="text-sm text-slate-500">Jami 24 ta vazifadan 5 tasi ko'rsatilmoqda</p>
+            <div class="flex items-center gap-2">
+                <button
+                    class="p-2 border border-slate-200 dark:border-slate-800 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50"
+                    disabled="">
+                    <span class="material-icons text-base">chevron_left</span>
+                </button>
+                <button
+                    class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-white font-medium text-sm">1</button>
+                <button
+                    class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 font-medium text-sm">2</button>
+                <button
+                    class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 font-medium text-sm">3</button>
+                <button
+                    class="p-2 border border-slate-200 dark:border-slate-800 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800">
+                    <span class="material-icons text-base">chevron_right</span>
+                </button>
+            </div>
+        </div>
+    </main>
+    <!-- Simple Feedback Toast (Static) -->
+    <div
+        class="fixed bottom-6 right-6 flex items-center gap-3 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-slate-700/50">
+        <span class="material-icons text-emerald-400">check_circle</span>
+        <span class="text-sm font-medium">Barcha o'zgarishlar saqlandi</span>
+    </div>
+
+    <div id="taskModal" class="fixed inset-0 z-[60] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div
+            class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+            <div
+                class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50">
+                <h2 class="text-xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                    <span class="material-icons text-primary">add_task</span>
+                    Vazifa Qo'shish
+                </h2>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <form class="p-6 space-y-5">
+                <div class="space-y-1.5">
+                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Vazifa nomi</label>
+                    <input
+                        class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm"
+                        placeholder="Masalan: API hujjatlarini yozish" type="text" />
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Tavsif</label>
+                    <textarea
+                        class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm resize-none"
+                        placeholder="Vazifa haqida batafsil ma'lumot..." rows="3"></textarea>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Holat</label>
+                        <div class="relative">
+                            <select
+                                class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm appearance-none">
+                                <option value="todo">Bajarish kerak</option>
+                                <option value="completed">Tugallangan</option>
+                                <option value="archive">Arxivda</option>
+                            </select>
+                            <span
+                                class="material-icons absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xl">expand_more</span>
+                        </div>
+                    </div>
+                    <div class="hidden md:block"></div>
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Sana</label>
+                        <div class="relative">
+                            <input
+                                class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm"
+                                type="date" />
+                        </div>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Vaqt</label>
+                        <div class="relative">
+                            <input
+                                class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm"
+                                type="time" />
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+                    <button
+                        onclick="closeModal()"
+                        class="px-6 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"
+                        type="button">
+                        Bekor qilish
+                    </button>
+                    <button
+                        class="px-8 py-2.5 text-sm font-semibold bg-primary hover:bg-blue-700 text-white rounded-xl shadow-lg shadow-primary/20 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                        type="submit">
+                        Saqlash
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
