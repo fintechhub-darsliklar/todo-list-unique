@@ -4,11 +4,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 
+
 def home_page(request):
     if not request.user.is_authenticated:
         return redirect("login")
     data = {
         "user": request.user,
+        "tasks": TodoList.objects.filter(user=request.user),
     }
     return render(request, 'index.html', context=data)
 
