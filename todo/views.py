@@ -1,17 +1,64 @@
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import TodoList
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from datetime import datetime
+from django.utils import timezone
 # Create your views here.
 
 
 def home_page(request):
     if not request.user.is_authenticated:
         return redirect("login")
+    is_created = True
+    if request.method == "POST":
+        date = request.POST.get("task-date")
+        time = request.POST.get("task-time")
+        hozir = timezone.now()
+        # date va time ni birlashtiramiz
+        task_datetime = datetime.strptime(
+            f"{date} {time}",
+            "%Y-%m-%d %H:%M"
+        )
+        # Agar timezone ishlatayotgan bo'lsang:
+        task_datetime = timezone.make_aware(task_datetime)
+        if task_datetime >= hozir:
+            
+            task = TodoList.objects.create(
+                task=request.POST.get("task-title"),
+                description=request.POST.get("task-desc"),
+                status=request.POST.get("task-status"),
+                date=date,
+                time=request.POST.get("task-time"),
+                user=request.user
+            )
+            is_created = True
+            print("craete")
+            
+        print("not craete")
+    
+    tasks = TodoList.objects.filter(user=request.user).order_by("date")
+    paginator = Paginator(tasks, 5) # Show 10 items per page
+
+    page_number = request.GET.get('page', 1)
+    try:
+        page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        page_obj = paginator.page(paginator.num_pages)
     data = {
         "user": request.user,
-        "tasks": TodoList.objects.filter(user=request.user),
+        "tasks": page_obj,
+        "is_created": is_created,
+        "jami": len(tasks),
+        "pages": list(range(1, len(tasks) // 5 +1)),
+        "current_page": page_number,
     }
+
     return render(request, 'index.html', context=data)
 
 

@@ -54,7 +54,23 @@
             document.getElementById("taskModal").classList.toggle("hidden");
         }
 
+        function showToast() {
+            const toast = document.getElementById("toast");
+
+            toast.classList.remove("hidden"); // ko'rsatadi
+
+            autoHideToast(); // 5 sekunddan keyin yopiladi
+        }
+
+        function autoHideToast() {
+            const toast = document.getElementById("toast");
+
+            setTimeout(() => {
+                toast.classList.add("hidden"); // yashiradi
+            }, 5000); // 5 sekund
+        }
     </script>
+
 </head>
 
 <body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
@@ -160,19 +176,20 @@
         </div>
         <!-- Pagination/Footer -->
         <div class="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p class="text-sm text-slate-500">Jami 24 ta vazifadan 5 tasi ko'rsatilmoqda</p>
+            <p class="text-sm text-slate-500">Jami {{jami}} ta vazifadan 5 tasi ko'rsatilmoqda</p>
             <div class="flex items-center gap-2">
                 <button
                     class="p-2 border border-slate-200 dark:border-slate-800 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50"
                     disabled="">
                     <span class="material-icons text-base">chevron_left</span>
                 </button>
-                <button
-                    class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-white font-medium text-sm">1</button>
-                <button
-                    class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 font-medium text-sm">2</button>
-                <button
-                    class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 font-medium text-sm">3</button>
+                {% for page in pages %}
+                    {% if page == current_page %}
+                        <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-white font-medium text-sm">{{page}}</button>
+                    {% else %}
+                        <button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 font-medium text-sm">{{page}}</button>
+                    {% endif %}
+                {% endfor %}
                 <button
                     class="p-2 border border-slate-200 dark:border-slate-800 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800">
                     <span class="material-icons text-base">chevron_right</span>
@@ -181,11 +198,12 @@
         </div>
     </main>
     <!-- Simple Feedback Toast (Static) -->
-    <div
-        class="fixed bottom-6 right-6 flex items-center gap-3 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-slate-700/50">
+    <div id="toast"
+        class="hidden fixed bottom-6 right-6 flex items-center gap-3 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-slate-700/50">
         <span class="material-icons text-emerald-400">check_circle</span>
         <span class="text-sm font-medium">Barcha o'zgarishlar saqlandi</span>
     </div>
+
 
     <div id="taskModal"
         class="fixed inset-0 z-[60] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
@@ -202,27 +220,28 @@
                     <span class="material-icons">close</span>
                 </button>
             </div>
-            <form class="p-6 space-y-5">
+            <form class="p-6 space-y-5" method="post">
+                {% csrf_token %}
                 <div class="space-y-1.5">
                     <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Vazifa nomi</label>
                     <input
                         class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm"
-                        placeholder="Masalan: API hujjatlarini yozish" type="text" />
+                        placeholder="Masalan: API hujjatlarini yozish" type="text" name="task-title" />
                 </div>
                 <div class="space-y-1.5">
                     <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Tavsif</label>
                     <textarea
                         class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm resize-none"
-                        placeholder="Vazifa haqida batafsil ma'lumot..." rows="3"></textarea>
+                        placeholder="Vazifa haqida batafsil ma'lumot..." rows="3" name="task-desc"></textarea>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Holat</label>
                         <div class="relative">
-                            <select
+                            <select name="task-status"
                                 class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm appearance-none">
                                 <option value="todo">Bajarish kerak</option>
-                                <option value="completed">Tugallangan</option>
+                                <option value="complated">Tugallangan</option>
                                 <option value="archive">Arxivda</option>
                             </select>
                             <span
@@ -235,7 +254,7 @@
                         <div class="relative">
                             <input
                                 class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm"
-                                type="date" />
+                                type="date" name="task-date" />
                         </div>
                     </div>
                     <div class="space-y-1.5">
@@ -243,7 +262,7 @@
                         <div class="relative">
                             <input
                                 class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm"
-                                type="time" />
+                                type="time" name="task-time"/>
                         </div>
                     </div>
                 </div>
