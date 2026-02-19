@@ -34,14 +34,13 @@ def home_page(request):
                 user=request.user
             )
             is_created = True
-            print("craete")
-            
-        print("not craete")
-    
+        return redirect("home")
+    status_filter = request.GET.get('status_filter', "all")
     tasks = TodoList.objects.filter(user=request.user).order_by("date")
+    if status_filter != "all":
+        tasks = tasks.filter(status=status_filter)
     paginator = Paginator(tasks, 5) # Show 10 items per page
-
-    page_number = request.GET.get('page', 1)
+    page_number = int(request.GET.get('page', 1))
     try:
         page_obj = paginator.page(page_number)
     except PageNotAnInteger:
@@ -50,15 +49,17 @@ def home_page(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         page_obj = paginator.page(paginator.num_pages)
+    pages_range = list(range(1, len(tasks) // 5 +1))
     data = {
         "user": request.user,
         "tasks": page_obj,
         "is_created": is_created,
         "jami": len(tasks),
-        "pages": list(range(1, len(tasks) // 5 +1)),
+        "pages": pages_range,
         "current_page": page_number,
+        "status_filter": status_filter,
+        "all_status": {'all': {"title": "Barchasi"}, 'todo': {"title": "Bajarish kerak"}, 'complated': {"title": "Bajarilgan"}, 'archive': {"title": "Arxivdagi"}}
     }
-
     return render(request, 'index.html', context=data)
 
 
