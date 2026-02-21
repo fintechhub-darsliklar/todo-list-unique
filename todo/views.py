@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,  get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import TodoList
 from django.contrib.auth.models import User
@@ -49,7 +49,7 @@ def home_page(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         page_obj = paginator.page(paginator.num_pages)
-    pages_range = list(range(1, len(tasks) // 5 +1))
+    pages_range = list(range(1, len(tasks) // 5 +2))
     data = {
         "user": request.user,
         "tasks": page_obj,
@@ -61,6 +61,20 @@ def home_page(request):
         "all_status": {'all': {"title": "Barchasi"}, 'todo': {"title": "Bajarish kerak"}, 'complated': {"title": "Bajarilgan"}, 'archive': {"title": "Arxivdagi"}}
     }
     return render(request, 'index.html', context=data)
+
+
+def task_update_view(request, pk):
+    task = get_object_or_404(TodoList, id=pk, user=request.user)
+
+    if request.method == "POST":
+        task.task = request.POST.get("task-title")
+        task.description = request.POST.get("task-desc")
+        task.status = request.POST.get("task-status")
+        # task.date = request.POST.get("task-date")
+        task.time = request.POST.get("task-time")
+        task.save()
+
+    return redirect("home")
 
 
 def login_page(request):

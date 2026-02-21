@@ -37,7 +37,81 @@
     </script>
 </head>
 
-<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<body
+    class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen relative">
+    <div class="fixed inset-0 z-[60] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div
+            class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+            <div
+                class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50">
+                <h2 class="text-xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                    <span class="material-icons text-primary">add_task</span>
+                    Vazifa Qo'shish
+                </h2>
+                <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <form class="p-6 space-y-5">
+                <div class="space-y-1.5">
+                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Vazifa nomi</label>
+                    <input
+                        class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm"
+                        placeholder="Masalan: API hujjatlarini yozish" type="text" />
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Tavsif</label>
+                    <textarea
+                        class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm resize-none"
+                        placeholder="Vazifa haqida batafsil ma'lumot..." rows="3"></textarea>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Holat</label>
+                        <div class="relative">
+                            <select
+                                class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm appearance-none">
+                                <option value="todo">Bajarish kerak</option>
+                                <option value="completed">Tugallangan</option>
+                                <option value="archive">Arxivda</option>
+                            </select>
+                            <span
+                                class="material-icons absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xl">expand_more</span>
+                        </div>
+                    </div>
+                    <div class="hidden md:block"></div>
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Sana</label>
+                        <div class="relative">
+                            <input
+                                class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm"
+                                type="date" />
+                        </div>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Vaqt</label>
+                        <div class="relative">
+                            <input
+                                class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm"
+                                type="time" />
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+                    <button
+                        class="px-6 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"
+                        type="button">
+                        Bekor qilish
+                    </button>
+                    <button
+                        class="px-8 py-2.5 text-sm font-semibold bg-primary hover:bg-blue-700 text-white rounded-xl shadow-lg shadow-primary/20 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                        type="submit">
+                        Saqlash
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
     <nav class="sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-3">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
             <div class="flex items-center gap-2 min-w-max">
@@ -69,7 +143,6 @@
                         <p class="text-[10px] text-slate-500">Administrator</p>
                     </div>
                     <img alt="User Profile" class="w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700"
-                        data-alt="A professional male user profile portrait"
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuC26f_dpTqwi3Yjau78ORgBV6j6yUOl3VMDkClUAv6BNx1rKLZSJCYPT1x-ymN8_XLCwTs0tnbLuGt1gA-CPGP2Y-06IFL3e3GsRadTB6v98XwRM1AGy3n8zt7MtsDXr_cXH4E6DPzqy45xpyD0KFaWmlMBBJ49is5pWqfq647tP3rqx_h-TJ-sFLTTqrt6Efyhr3FBABUjAGz8n9wLn_z9k7hLE-JhyVyc1YFlVsyGty_Y0eRKEv1LgWQEWb5u1F30t_-rVO4qx1Kg" />
                 </div>
             </div>
@@ -96,12 +169,14 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div
-                class="group relative bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-none transition-all cursor-pointer border-l-4 border-l-amber-400">
+                class="group bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-none transition-all cursor-pointer border-l-4 border-l-amber-400">
                 <div class="flex justify-between items-start mb-3">
                     <span
                         class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">Bajarish
                         kerak</span>
-                    
+                    <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                        <span class="material-icons">more_vert</span>
+                    </button>
                 </div>
                 <h3 class="font-bold text-lg mb-2 group-hover:text-primary transition-colors">Django API Integratsiyasi
                 </h3>
@@ -114,7 +189,6 @@
                     </div>
                     <div class="flex -space-x-2">
                         <img alt="Team" class="w-6 h-6 rounded-full border-2 border-white dark:border-slate-900"
-                            data-alt="Team member profile photo"
                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLFRLsFetbff6vqQ0lL_EK6yMKHEWmgHyCXxRub8S-oV6Mi45ie5OnTaMvoMqZRYXQCG1_qhE7EcZ_e8DOxQKIBLsfsm6ACNaqOGrtnUyNdIA8wXXlQFdOQCmPoFxVrBa7FG85175eG2KpU5Xy2Nt8qmkgVXHvLBJLx2q1iUCMKalnAj8tN78BaZHRNKI1CeRpkBwRmqHfeHWocGmqCZw3peWv_1eJDIlJRDn4p7_5yiz4ZWRXLPj9fhJ5ZgfRYWhVfO56awkuWTPV" />
                         <div
                             class="w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-white dark:border-slate-900 flex items-center justify-center">
@@ -128,7 +202,7 @@
                 <div class="flex justify-between items-start mb-3">
                     <span
                         class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">Tugallangan</span>
-                    <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
+                    <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                         <span class="material-icons">more_vert</span>
                     </button>
                 </div>
@@ -143,7 +217,6 @@
                     </div>
                     <div class="flex -space-x-2">
                         <img alt="Team" class="w-6 h-6 rounded-full border-2 border-white dark:border-slate-900"
-                            data-alt="Female team member profile"
                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3R_eDcU2ZYQPIkjK8tf5CVn9LT7ZuekAKb8chTjEaXdUtVHkkzp9Ib7HiZS_GVWC1-51Kryd4-RT6vhCTFmoLJVS9nL99tbvACnXWqEF5U-2KE4-EhSyS_0Lgl_trb531ARxGMakPzv7p-XetnEdmMR4oh26Ebjd7x5MhwWn4GqtOsvnD8PtMrgStqy2l_YOIKN6QYi-ObeIvY_kk_wADTRn58zuhfd_QBdgYlBu5Ty9w7AvaUp_VTE77p-wtYKIVS4juVhKBgj_r" />
                     </div>
                 </div>
@@ -154,7 +227,7 @@
                     <span
                         class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-blue-100 text-primary dark:bg-primary/20 dark:text-primary">Bajarish
                         kerak</span>
-                    <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
+                    <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                         <span class="material-icons">more_vert</span>
                     </button>
                 </div>
@@ -181,7 +254,7 @@
                 <div class="flex justify-between items-start mb-3">
                     <span
                         class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400">Arxivda</span>
-                    <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
+                    <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                         <span class="material-icons">more_vert</span>
                     </button>
                 </div>
@@ -202,7 +275,7 @@
                     <span
                         class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">Bajarish
                         kerak</span>
-                    <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
+                    <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                         <span class="material-icons">more_vert</span>
                     </button>
                 </div>
@@ -216,7 +289,6 @@
                     </div>
                     <div class="flex -space-x-2">
                         <img alt="Team" class="w-6 h-6 rounded-full border-2 border-white dark:border-slate-900"
-                            data-alt="Developer profile"
                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzwu-DDsDuAlJZtrTBLXrU5gwX3hjPM1aDCLI0zrWMFsH7KI77KvyMROV3d0Ew2pilClNJptVaLwLs-kT_SytgDuh0hljPCSLcXfDWifUVEs4f-_-qRCDDyO_VAjD6ljjR6etwNNTWP9VTegB-gxA3euFt5cwO_qrBvxyxlpsBoyHdj18YYiEDQuu7uBsKRy-bKMd7iZeyVJxqyvrI98uYoP7dzbjzkKAB-nIm_BztNrAOVJ2amDrvUp-RJ3cCwcRvvMfORsCX85T5" />
                     </div>
                 </div>
@@ -253,11 +325,10 @@
         </div>
     </main>
     <div
-        class="fixed bottom-6 right-6 flex items-center gap-3 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-slate-700/50 z-50">
+        class="fixed bottom-6 right-6 flex items-center gap-3 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-slate-700/50 z-40">
         <span class="material-icons text-emerald-400">check_circle</span>
         <span class="text-sm font-medium">Barcha o'zgarishlar saqlandi</span>
     </div>
-
 </body>
 
 </html>

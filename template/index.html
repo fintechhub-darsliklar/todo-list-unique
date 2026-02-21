@@ -69,6 +69,47 @@
                 toast.classList.add("hidden"); // yashiradi
             }, 5000); // 5 sekund
         }
+
+        function toggleDropdown(event, id) {
+            event.stopPropagation();
+
+            // Boshqa ochiq dropdownlarni yopish
+            document.querySelectorAll("[id^='dropdown-']").forEach(el => {
+                if (el.id !== id) {
+                    el.classList.add("hidden");
+                }
+            });
+
+            // Tanlangan dropdownni toggle qilish
+            document.getElementById(id).classList.toggle("hidden");
+        }
+
+        // Tashqarisini bosganda yopish
+        window.addEventListener("click", function () {
+            document.querySelectorAll("[id^='dropdown-']").forEach(el => {
+                el.classList.add("hidden");
+            });
+        });
+
+        function openEditModal(id, title, desc, status, date, time) {
+            console.log(title, id, status, date);
+
+            // Modalni ochish
+            document.getElementById("taskModal").classList.remove("hidden");
+
+            // Form action ni update urlga o‘zgartirish
+            document.getElementById("taskForm").action = "task/update/" + id + "/";
+
+            // Hidden id input
+            document.getElementById("task-id").value = id;
+
+            // Inputlarni to‘ldirish
+            document.getElementById("task-title").value = title;
+            document.getElementById("task-desc").value = desc;
+            document.getElementById("task-status").value = status;
+            document.getElementById("task-date").value = date;
+            document.getElementById("task-time").value = time;
+        }
     </script>
 
 </head>
@@ -124,15 +165,15 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
             <div class="flex flex-wrap items-center gap-2 p-1 bg-slate-200/50 dark:bg-slate-800/50 rounded-xl w-fit">
                 {% for key, value in all_status.items %}
-                
+
                 {% if key == status_filter %}
                 <a href="{% url 'home' %}?status_filter={{key}}"><button
                         class="px-5 py-2 text-sm font-medium rounded-lg bg-white dark:bg-primary shadow-sm text-primary dark:text-white transition-all">{{value.title}}</button>
                 </a>
                 {% else %}
                 <a href="{% url 'home' %}?status_filter={{key}}"><button
-                    class="px-5 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-800 transition-all">{{value.title}}</button></a>
-                    {% endif %}
+                        class="px-5 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-800 transition-all">{{value.title}}</button></a>
+                {% endif %}
                 {% endfor %}
             </div>
             <button onclick="openModal()"
@@ -150,9 +191,42 @@
                 <div class="flex justify-between items-start mb-3">
                     <span
                         class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">{{task.status}}</span>
-                    <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <button onclick="toggleDropdown(event, 'dropdown-{{task.id}}')"
+                        class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors p-1">
                         <span class="material-icons">more_vert</span>
                     </button>
+                </div>
+                <div class="relative">
+
+
+                    <div id="dropdown-{{task.id}}"
+                        class="hidden absolute right-0 mt-1 w-44 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-700 py-2 z-20">
+
+                        <button type="button" onclick="openEditModal(
+        '{{task.id}}',
+        '{{task.task|escapejs}}',
+        '{{task.description|escapejs}}',
+        '{{task.status}}',
+        '{{task.date|date:" Y-m-d"}}', '{{task.time|time:"H:i"}}' )"
+                            class="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                            <span class="material-icons text-lg text-slate-400">edit</span>
+                            <span>Tahrirlash</span>
+                        </button>
+
+                        <button
+                            class="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                            <span class="material-icons text-lg text-slate-400">archive</span>
+                            <span>Arxivlash</span>
+                        </button>
+
+                        <div class="my-1 border-t border-slate-100 dark:border-slate-700"></div>
+
+                        <button
+                            class="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                            <span class="material-icons text-lg">delete_outline</span>
+                            <span>O'chirish</span>
+                        </button>
+                    </div>
                 </div>
                 <h3 class="font-bold text-lg mb-2 group-hover:text-primary transition-colors">{{task.task}}
                 </h3>
@@ -225,25 +299,26 @@
                     <span class="material-icons">close</span>
                 </button>
             </div>
-            <form class="p-6 space-y-5" method="post">
+            <form id="taskForm" class="p-6 space-y-5" method="post">
                 {% csrf_token %}
+                <input type="hidden" name="task-id" id="task-id">
                 <div class="space-y-1.5">
                     <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Vazifa nomi</label>
                     <input
                         class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm"
-                        placeholder="Masalan: API hujjatlarini yozish" type="text" name="task-title" />
+                        placeholder="Masalan: API hujjatlarini yozish" type="text" name="task-title" id="task-title" />
                 </div>
                 <div class="space-y-1.5">
                     <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Tavsif</label>
                     <textarea
                         class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm resize-none"
-                        placeholder="Vazifa haqida batafsil ma'lumot..." rows="3" name="task-desc"></textarea>
+                        placeholder="Vazifa haqida batafsil ma'lumot..." rows="3" name="task-desc" id="task-desc"></textarea>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Holat</label>
                         <div class="relative">
-                            <select name="task-status"
+                            <select name="task-status" id="task-status"
                                 class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm appearance-none">
                                 <option value="todo">Bajarish kerak</option>
                                 <option value="complated">Tugallangan</option>
@@ -258,6 +333,7 @@
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Sana</label>
                         <div class="relative">
                             <input
+                                id="task-date"
                                 class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm"
                                 type="date" name="task-date" />
                         </div>
@@ -266,6 +342,7 @@
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Vaqt</label>
                         <div class="relative">
                             <input
+                                id="task-time"
                                 class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm"
                                 type="time" name="task-time" />
                         </div>
@@ -285,6 +362,7 @@
                 </div>
             </form>
         </div>
+
     </div>
 </body>
 
