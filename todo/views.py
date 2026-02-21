@@ -36,9 +36,11 @@ def home_page(request):
             is_created = True
         return redirect("home")
     status_filter = request.GET.get('status_filter', "all")
-    tasks = TodoList.objects.filter(user=request.user).exclude(status='archive').order_by("date")
+    tasks = TodoList.objects.filter(user=request.user).order_by("date")
     if status_filter != "all":
         tasks = tasks.filter(status=status_filter)
+    else:
+        tasks = tasks.exclude(status='archive')
     paginator = Paginator(tasks, 5) # Show 10 items per page
     page_number = int(request.GET.get('page', 1))
     try:
