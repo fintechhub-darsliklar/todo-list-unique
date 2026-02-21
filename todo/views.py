@@ -13,8 +13,11 @@ def home_page(request):
         return redirect("login")
     is_created = True
     if request.method == "POST":
-        date = request.POST.get("task-date")
-        time = request.POST.get("task-time")
+        date = request.POST.get("task-date", None)
+        time = request.POST.get("task-time", None)
+        print(date, time)
+        if date == "" or time is None:
+            return redirect("home")
         hozir = timezone.now()
         # date va time ni birlashtiramiz
         task_datetime = datetime.strptime(
