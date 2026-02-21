@@ -212,20 +212,21 @@
                             <span class="material-icons text-lg text-slate-400">edit</span>
                             <span>Tahrirlash</span>
                         </button>
-
+                        <a href="{% url 'task_archive' pk=task.id %}">
                         <button
                             class="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                             <span class="material-icons text-lg text-slate-400">archive</span>
                             <span>Arxivlash</span>
                         </button>
-
+                        </a>
                         <div class="my-1 border-t border-slate-100 dark:border-slate-700"></div>
-
-                        <button
-                            class="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
-                            <span class="material-icons text-lg">delete_outline</span>
-                            <span>O'chirish</span>
-                        </button>
+                        <a href="{% url 'task_delete' pk=task.id %}">
+                            <button
+                                class="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                                <span class="material-icons text-lg">delete_outline</span>
+                                <span>O'chirish</span>
+                            </button>
+                        </a>
                     </div>
                 </div>
                 <h3 class="font-bold text-lg mb-2 group-hover:text-primary transition-colors">{{task.task}}
@@ -312,7 +313,8 @@
                     <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Tavsif</label>
                     <textarea
                         class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm resize-none"
-                        placeholder="Vazifa haqida batafsil ma'lumot..." rows="3" name="task-desc" id="task-desc"></textarea>
+                        placeholder="Vazifa haqida batafsil ma'lumot..." rows="3" name="task-desc"
+                        id="task-desc"></textarea>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
@@ -332,8 +334,7 @@
                     <div class="space-y-1.5">
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Sana</label>
                         <div class="relative">
-                            <input
-                                id="task-date"
+                            <input id="task-date"
                                 class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm"
                                 type="date" name="task-date" />
                         </div>
@@ -341,8 +342,7 @@
                     <div class="space-y-1.5">
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Vaqt</label>
                         <div class="relative">
-                            <input
-                                id="task-time"
+                            <input id="task-time"
                                 class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary focus:border-primary transition-all text-sm"
                                 type="time" name="task-time" />
                         </div>

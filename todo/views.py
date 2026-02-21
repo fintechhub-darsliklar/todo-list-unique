@@ -36,7 +36,7 @@ def home_page(request):
             is_created = True
         return redirect("home")
     status_filter = request.GET.get('status_filter', "all")
-    tasks = TodoList.objects.filter(user=request.user).order_by("date")
+    tasks = TodoList.objects.filter(user=request.user).exclude(status='archive').order_by("date")
     if status_filter != "all":
         tasks = tasks.filter(status=status_filter)
     paginator = Paginator(tasks, 5) # Show 10 items per page
@@ -75,6 +75,21 @@ def task_update_view(request, pk):
         task.save()
 
     return redirect("home")
+
+
+def task_delete_view(request, pk):
+    task = get_object_or_404(TodoList, id=pk, user=request.user)
+    if task:
+        task.delete()
+    return redirect("home")
+    
+       
+def task_update_to_archive_view(request, pk):
+    task = get_object_or_404(TodoList, id=pk, user=request.user)
+    if task:
+        task.status = 'archive'
+        task.save()
+    return redirect("home") 
 
 
 def login_page(request):
